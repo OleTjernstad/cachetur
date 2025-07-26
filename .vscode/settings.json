@@ -7,5 +7,12 @@
   },
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
-  }
+  },
+  "cSpell.words": [
+    "Dansk",
+    "Deutsch",
+    "languagedetector",
+    "Norsk",
+    "Svenska"
+  ]
 }

@@ -13,13 +13,20 @@ import { Label } from '@/components/ui/label'
 import { createFileRoute } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export const Route = createFileRoute('/auth/login')({
   component: LoginPage,
 })
 
 function LoginPage() {
-  const [selectedLanguage, setSelectedLanguage] = useState('en')
+  const { t, i18n } = useTranslation()
+  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language)
+  console.log('Current language:', selectedLanguage)
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng)
+    setSelectedLanguage(lng)
+  }
 
   const form = useForm({
     defaultValues: {
@@ -35,14 +42,11 @@ function LoginPage() {
   })
 
   const languages = [
-    { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'no', name: 'Norsk', flag: '🇳🇴' },
-    { code: 'se', name: 'Svenska', flag: '🇸🇪' },
-    { code: 'dk', name: 'Dansk', flag: '🇩🇰' },
-    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-    { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
-    { code: 'pl', name: 'Polski', flag: '🇵🇱' },
-    { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'en', name: 'English', flag: '/flag/us.png' },
+    { code: 'nb', name: 'Norsk', flag: '/flag/no.png' },
+    { code: 'sv', name: 'Svenska', flag: '/flag/se.png' },
+    { code: 'da', name: 'Dansk', flag: '/flag/dk.png' },
+    { code: 'de', name: 'Deutsch', flag: '/flag/de.png' },
   ]
 
   return (
@@ -74,15 +78,19 @@ function LoginPage() {
               {languages.map((lang) => (
                 <button
                   key={lang.code}
-                  onClick={() => setSelectedLanguage(lang.code)}
-                  className={`text-2xl hover:scale-110 transition-transform duration-200 ${
+                  onClick={() => changeLanguage(lang.code)}
+                  className={`hover:scale-110 transition-transform duration-200 ${
                     selectedLanguage === lang.code
                       ? 'ring-2 ring-white rounded'
                       : ''
                   }`}
                   title={lang.name}
                 >
-                  {lang.flag}
+                  <img
+                    src={lang.flag}
+                    alt={lang.name}
+                    className="h-4 w-4 object-cover rounded"
+                  />
                 </button>
               ))}
             </div>
