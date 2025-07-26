@@ -282,33 +282,6 @@ function LoginPage() {
                 </p>
               </CardContent>
             </Card>
-
-            {/* Geocaching API Attribution */}
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-start space-x-3">
-                  <img
-                    src="/placeholder.svg?height=40&width=120"
-                    alt="Geocaching API"
-                    width="120"
-                    height="40"
-                    className="mt-1"
-                  />
-                  <div className="text-sm text-gray-600">
-                    <p>
-                      Powered by the Geocaching API. Made possible through the
-                      support of Geocaching Premium Memberships, the API program
-                      gives third-party developers the opportunity to work with
-                      Geocaching HQ on a full suite of integrated products and
-                      services for the community. API developer applications are
-                      designed to work with the core services of geocaching.com
-                      and provide additional features to the geocaching
-                      community.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </main>
@@ -316,6 +289,31 @@ function LoginPage() {
       {/* Footer */}
       <footer className="bg-slate-800 text-white mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Geocaching API Attribution */}
+          <div className="mb-6 pb-6 border-b border-slate-700">
+            <div className="flex items-start space-x-3">
+              <img
+                src="/Geocaching_API_Logo_vCOMP2_090716_SM.png"
+                alt="Geocaching API"
+                width="120"
+                height="40"
+                className="mt-1"
+              />
+              <div className="text-sm text-gray-300">
+                <p>
+                  Powered by the Geocaching API. Made possible through the
+                  support of Geocaching Premium Memberships, the API program
+                  gives third-party developers the opportunity to work with
+                  Geocaching HQ on a full suite of integrated products and
+                  services for the community. API developer applications are
+                  designed to work with the core services of geocaching.com and
+                  provide additional features to the geocaching community.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Copyright */}
           <div className="text-center">
             <p className="text-sm text-gray-400">
               © 2024 Cachetur.no - Your geocaching trip planning companion
