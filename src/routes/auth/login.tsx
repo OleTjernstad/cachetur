@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { HelpCircle, Info, KeyRound, MapPin, UserPlus } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -42,11 +36,11 @@ function LoginPage() {
   })
 
   const languages = [
-    { code: 'en', name: 'English', flag: '/flag/us.png' },
-    { code: 'nb', name: 'Norsk', flag: '/flag/no.png' },
-    { code: 'sv', name: 'Svenska', flag: '/flag/se.png' },
-    { code: 'da', name: 'Dansk', flag: '/flag/dk.png' },
-    { code: 'de', name: 'Deutsch', flag: '/flag/de.png' },
+    { code: 'en_US', name: 'English', flag: '/flag/us.png' },
+    { code: 'nb_NO', name: 'Norsk', flag: '/flag/no.png' },
+    { code: 'sv_SE', name: 'Svenska', flag: '/flag/se.png' },
+    { code: 'da_DK', name: 'Dansk', flag: '/flag/dk.png' },
+    { code: 'de_DE', name: 'Deutsch', flag: '/flag/de.png' },
   ]
 
   return (
@@ -55,7 +49,7 @@ function LoginPage() {
       <div className="relative h-80  overflow-hidden">
         <img
           src="/login-background-2016.jpg"
-          alt="Geocaching landscape"
+          alt=""
           className="absolute inset-0 w-full h-full object-cover  transform scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/60" />
@@ -107,11 +101,8 @@ function LoginPage() {
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <MapPin className="h-5 w-5 text-green-600" />
-                  <span>Sign In</span>
+                  <span>{t('login.signIn')}</span>
                 </CardTitle>
-                <CardDescription>
-                  Enter your credentials to access your geocaching trips
-                </CardDescription>
               </CardHeader>
               <CardContent>
                 <form
@@ -126,19 +117,21 @@ function LoginPage() {
                     name="username"
                     validators={{
                       onChange: ({ value }) =>
-                        !value ? 'Username is required' : undefined,
+                        !value ? t('login.usernameRequired') : undefined,
                     }}
                   >
                     {(field) => (
                       <div className="space-y-2">
-                        <Label htmlFor={field.name}>Username</Label>
+                        <Label htmlFor={field.name}>
+                          {t('login.username')}
+                        </Label>
                         <Input
                           id={field.name}
                           name={field.name}
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
-                          placeholder="Enter your username"
+                          placeholder={t('login.enterUsername')}
                           className={
                             field.state.meta.errors.length > 0
                               ? 'border-red-500'
@@ -158,12 +151,14 @@ function LoginPage() {
                     name="password"
                     validators={{
                       onChange: ({ value }) =>
-                        !value ? 'Password is required' : undefined,
+                        !value ? t('login.passwordRequired') : undefined,
                     }}
                   >
                     {(field) => (
                       <div className="space-y-2">
-                        <Label htmlFor={field.name}>Password</Label>
+                        <Label htmlFor={field.name}>
+                          {t('login.password')}
+                        </Label>
                         <Input
                           id={field.name}
                           name={field.name}
@@ -171,7 +166,7 @@ function LoginPage() {
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
-                          placeholder="Enter your password"
+                          placeholder={t('login.enterPassword')}
                           className={
                             field.state.meta.errors.length > 0
                               ? 'border-red-500'
@@ -196,7 +191,9 @@ function LoginPage() {
                         disabled={!canSubmit}
                         className="w-full bg-green-600 hover:bg-green-700"
                       >
-                        {isSubmitting ? 'Signing in...' : 'Sign In'}
+                        {isSubmitting
+                          ? t('login.signingIn')
+                          : t('login.signIn')}
                       </Button>
                     )}
                   </form.Subscribe>
@@ -210,28 +207,28 @@ function LoginPage() {
                       className="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition-colors"
                     >
                       <Info className="h-4 w-4" />
-                      <span>What is cachetur.no?</span>
+                      <span>{t('login.whatIsCachetur')}</span>
                     </a>
                     <a
                       href="/signup"
                       className="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition-colors"
                     >
                       <UserPlus className="h-4 w-4" />
-                      <span>Sign up</span>
+                      <span>{t('login.signUp')}</span>
                     </a>
                     <a
                       href="/forgot-password"
                       className="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition-colors"
                     >
                       <KeyRound className="h-4 w-4" />
-                      <span>Forgot password</span>
+                      <span>{t('login.forgotPassword')}</span>
                     </a>
                     <a
                       href="/help"
                       className="flex items-center space-x-2 text-gray-600 hover:text-green-600 transition-colors"
                     >
                       <HelpCircle className="h-4 w-4" />
-                      <span>Help Center</span>
+                      <span>{t('login.helpCenter')}</span>
                     </a>
                   </div>
                 </div>
@@ -244,48 +241,29 @@ function LoginPage() {
             {/* Registration Information */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Not registered?</CardTitle>
+                <CardTitle className="text-lg">
+                  {t('login.notRegistered')}
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
+                <p>{t('login.needUser')}</p>
                 <p>
-                  You need to have a user on cachetur.no. Even though we're
-                  connected to geocaching.com, you need to create a new user
-                  here before you can sign in.
-                </p>
-                <p>
-                  Cachetur.no is a trip planning tool for geocachers (you still
-                  have to plan the trips yourself). Cachetur.no is not a
-                  personal geocaching database tool (like GSAK). If a trip
-                  planner is what you're looking for, and you haven't already
-                  registered,{' '}
+                  {t('login.tripPlannerInfo')}{' '}
                   <a
                     href="/signup"
                     className="text-green-600 hover:text-green-700 font-medium"
                   >
-                    sign up here!
+                    {t('login.signUpHere')}
                   </a>
                 </p>
-                <p>
-                  It is entirely free to create an account and use cachetur.no,
-                  but you must have an account at{' '}
-                  <a
-                    href="https://geocaching.com"
-                    className="text-blue-600 hover:text-blue-700 font-medium"
-                  >
-                    geocaching.com
-                  </a>{' '}
-                  before you can use cachetur.no.
-                </p>
-                <p>
-                  To take full advantage of cachetur.no, you need to be a
-                  premium member at geocaching.com.
-                </p>
+                <p>{t('login.freeAccountInfo')}</p>
+                <p>{t('login.premiumInfo')}</p>
                 <p>
                   <a
                     href="/about"
                     className="text-green-600 hover:text-green-700 font-medium"
                   >
-                    Read more and watch an introductory video here
+                    {t('login.readMore')}
                   </a>
                 </p>
               </CardContent>
@@ -324,7 +302,7 @@ function LoginPage() {
           {/* Copyright */}
           <div className="text-center">
             <p className="text-sm text-gray-400">
-              © 2024 Cachetur.no - Your geocaching trip planning companion
+              © 2024 Cachetur.no - {t('footer.copyright')}
             </p>
           </div>
         </div>

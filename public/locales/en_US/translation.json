@@ -1,0 +1,27 @@
+{
+  "login": {
+    "signIn": "Sign In",
+
+    "username": "Username",
+    "usernameRequired": "Username is required",
+    "enterUsername": "Enter your username",
+    "password": "Password",
+    "passwordRequired": "Password is required",
+    "enterPassword": "Enter your password",
+    "signingIn": "Signing in...",
+    "whatIsCachetur": "What is cachetur.no?",
+    "signUp": "Sign up",
+    "forgotPassword": "Forgot password",
+    "helpCenter": "Help Center",
+    "notRegistered": "Not registered?",
+    "needUser": "You need to have a user on cachetur.no. Even though we're connected to geocaching.com, you need to create a new user here before you can sign in.",
+    "tripPlannerInfo": "Cachetur.no is a trip planning tool for geocachers (you still have to plan the trips yourself). Cachetur.no is not a personal geocaching database tool (like GSAK). If a trip planner is what you're looking for, and you haven't already registered, ",
+    "signUpHere": "sign up here!",
+    "freeAccountInfo": "It is entirely free to create an account and use cachetur.no, but you must have an account at geocaching.com before you can use cachetur.no.",
+    "premiumInfo": "To take full advantage of cachetur.no, you need to be a premium member at geocaching.com.",
+    "readMore": "Read more and watch an introductory video here"
+  },
+  "footer": {
+    "copyright": "Your geocaching trip planning companion"
+  }
+}

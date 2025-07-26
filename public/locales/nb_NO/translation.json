@@ -1,0 +1,27 @@
+{
+  "login": {
+    "signIn": "Logg inn",
+
+    "username": "Brukernavn",
+    "usernameRequired": "Brukernavn er påkrevd",
+    "enterUsername": "Skriv inn brukernavnet ditt",
+    "password": "Passord",
+    "passwordRequired": "Passord er påkrevd",
+    "enterPassword": "Skriv inn passordet ditt",
+    "signingIn": "Logger inn...",
+    "whatIsCachetur": "Hva er cachetur.no?",
+    "signUp": "Registrer deg",
+    "forgotPassword": "Glemt passord?",
+    "helpCenter": "Hjelpesenter",
+    "notRegistered": "Ikke registrert?",
+    "needUser": "Du må ha en bruker på cachetur.no. Selv om vi er koblet til geocaching.com, må du opprette en ny bruker her før du kan logge inn.",
+    "tripPlannerInfo": "Cachetur.no er et verktøy for planlegging av turer for geocachere (du må fortsatt planlegge turene selv). Cachetur.no er ikke et personlig geocaching-databaseverktøy (som GSAK). Hvis en turplanlegger er det du leter etter, og du ikke allerede har registrert deg, ",
+    "signUpHere": "registrer deg her!",
+    "freeAccountInfo": "Det er helt gratis å opprette en konto og bruke cachetur.no, men du må ha en konto på geocaching.com før du kan bruke cachetur.no.",
+    "premiumInfo": "For å få full nytte av cachetur.no, må du være en premium-medlem på geocaching.com.",
+    "readMore": "Les mer og se en introduksjonsvideo her"
+  },
+  "footer": {
+    "copyright": "Din geocaching turplanlegger"
+  }
+}
