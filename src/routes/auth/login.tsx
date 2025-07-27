@@ -1,19 +1,31 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { HelpCircle, Info, KeyRound, MapPin, UserPlus } from 'lucide-react'
+import { createFileRoute, useRouter, useSearch } from '@tanstack/react-router'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { createFileRoute } from '@tanstack/react-router'
+import { authClient } from '@/lib/auth-client'
 import { useForm } from '@tanstack/react-form'
 import { useTranslation } from 'react-i18next'
+import { z } from 'zod'
+
+const loginSearchSchema = z.object({
+  redirect: z.string().catch('').optional(),
+})
 
 export const Route = createFileRoute('/auth/login')({
   component: LoginPage,
+  validateSearch: (search) => loginSearchSchema.parse(search),
 })
 
 function LoginPage() {
   const { t } = useTranslation()
+  const router = useRouter()
+
+  const { redirect } = useSearch({
+    from: Route.fullPath,
+  })
 
   const form = useForm({
     defaultValues: {
@@ -23,8 +35,34 @@ function LoginPage() {
     onSubmit: async ({ value }) => {
       // Handle login logic here
       console.log('Login attempt:', value)
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const { data, error } = await authClient.signIn.username(
+        {
+          username: value.username,
+          /**
+           * The user password
+           */
+          password: value.password,
+
+          /**
+           * remember the user session after the browser is closed.
+           * @default true
+           */
+          rememberMe: false,
+        },
+        {
+          onSuccess: () => {
+            if (redirect) router.history.push(redirect)
+            else router.history.push('/')
+          },
+        },
+      )
+
+      if (error) {
+        console.error('Login error:', error)
+        return
+      }
+
+      console.log('Login successful:', data)
     },
   })
 
