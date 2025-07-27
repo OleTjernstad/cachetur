@@ -2,7 +2,21 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 
-export function NavigationButtons() {
+interface NavigationButtonsProps {
+  currentStep: number
+  isEmailSent: boolean
+  handleNext: () => void
+  handlePrevious: () => void
+  isTermsAccepted?: boolean
+}
+
+export function NavigationButtons({
+  currentStep,
+  isEmailSent,
+  handleNext,
+  handlePrevious,
+  isTermsAccepted = false,
+}: NavigationButtonsProps) {
   return (
     <div className="flex justify-between mt-8 pt-4 border-t">
       <Button
@@ -19,8 +33,7 @@ export function NavigationButtons() {
         type="button"
         onClick={handleNext}
         disabled={
-          (currentStep === 2 &&
-            !form.getFieldValue('termsAndPrivacyAccepted')) ||
+          (currentStep === 2 && !isTermsAccepted) ||
           (currentStep === 4 && !isEmailSent)
         }
       >

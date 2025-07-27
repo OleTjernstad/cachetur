@@ -9,39 +9,21 @@ import { StepOne } from './-components/step-one'
 import { StepThree } from './-components/step-three'
 import { StepTwo } from './-components/step-two'
 import { createFileRoute } from '@tanstack/react-router'
-import { useForm } from '@tanstack/react-form'
+import { formOpts } from './-components/options'
+import { useAppForm } from '@/components/form/form-context'
 import { useState } from 'react'
 
 export const Route = createFileRoute('/auth/register/')({
   component: MultiStepSignupForm,
 })
 
-interface FormData {
-  firstName: string
-  lastName: string
-  username: string
-  howDidYouHear: string
-  termsAndPrivacyAccepted: boolean // Changed from two separate fields
-  email: string
-  password: string
-  confirmPassword: string
-  verificationCode: string
-}
-
 export default function MultiStepSignupForm() {
   const [currentStep, setCurrentStep] = useState(1)
-  const [isEmailSent, setIsEmailSent] = useState(false)
 
-  const form = useForm<FormData>({
-    defaultValues: {
-      username: '',
-      howDidYouHear: '',
-      termsAndPrivacyAccepted: false, // Single field instead of two
-      email: '',
-      password: '',
-      confirmPassword: '',
-      verificationCode: '',
-    },
+  const [isEmailSent, setIsEmailSent] = useState<boolean>(false)
+
+  const form = useAppForm({
+    ...formOpts,
     onSubmit: async ({ value }) => {
       console.log('Form submitted:', value)
       if (currentStep < 5) {
@@ -62,12 +44,6 @@ export default function MultiStepSignupForm() {
     }
   }
 
-  const handleSendVerificationEmail = () => {
-    setIsEmailSent(true)
-    // Simulate sending email
-    console.log('Verification email sent')
-  }
-
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader className="pb-2">
@@ -83,16 +59,22 @@ export default function MultiStepSignupForm() {
           }}
         >
           {/* Step 1: Information and Username Selection */}
-          {currentStep === 1 && <StepOne />}
+          {currentStep === 1 && <StepOne form={form} />}
 
           {/* Step 2: Terms Acceptance */}
-          {currentStep === 2 && <StepTwo />}
+          {currentStep === 2 && <StepTwo form={form} />}
 
           {/* Step 3: Email and Password Setup */}
-          {currentStep === 3 && <StepThree />}
+          {currentStep === 3 && <StepThree form={form} />}
 
           {/* Step 4: Email Verification */}
-          {currentStep === 4 && <StepFire />}
+          {currentStep === 4 && (
+            <StepFire
+              form={form}
+              isEmailSent={isEmailSent}
+              setIsEmailSent={setIsEmailSent}
+            />
+          )}
 
           {/* Step 5: Account Creation Complete */}
           {currentStep === 5 && (
@@ -109,19 +91,53 @@ export default function MultiStepSignupForm() {
 
               <div className="bg-green-50 p-4 rounded-lg">
                 <p className="text-green-800 text-sm">
-                  Welcome to our platform! You can now start using all the
-                  features available to you.
+                  Welcome to cachetur.no! You can now start planning your trips
                 </p>
               </div>
 
-              <Button type="button" className="w-full">
-                Get Started
-              </Button>
+              <form.Subscribe
+                selector={(state) => [state.canSubmit, state.isSubmitting]}
+                children={([canSubmit, isSubmitting]) => (
+                  <>
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={!canSubmit}
+                    >
+                      {isSubmitting ? '...' : 'Get started'}
+                    </Button>
+
+                    <button
+                      type="reset"
+                      onClick={(e) => {
+                        // Avoid unexpected resets of form elements (especially <select> elements)
+                        e.preventDefault()
+                        form.reset()
+                      }}
+                    >
+                      Reset
+                    </button>
+                  </>
+                )}
+              />
             </div>
           )}
 
           {/* Navigation Buttons */}
-          {currentStep < 5 && <NavigationButtons />}
+          {currentStep < 5 && (
+            <form.Subscribe
+              selector={(state) => state.values.terms}
+              children={(terms) => (
+                <NavigationButtons
+                  currentStep={currentStep}
+                  isEmailSent={isEmailSent}
+                  handleNext={handleNext}
+                  handlePrevious={handlePrevious}
+                  isTermsAccepted={terms}
+                />
+              )}
+            />
+          )}
         </form>
       </CardContent>
     </Card>
