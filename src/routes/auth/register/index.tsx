@@ -8,6 +8,7 @@ import { StepFire } from './-components/step-fire'
 import { StepOne } from './-components/step-one'
 import { StepThree } from './-components/step-three'
 import { StepTwo } from './-components/step-two'
+import { authClient } from '@/lib/auth-client'
 import { createFileRoute } from '@tanstack/react-router'
 import { formOpts } from './-components/options'
 import { useAppForm } from '@/components/form/form-context'
@@ -26,6 +27,13 @@ export default function MultiStepSignupForm() {
     ...formOpts,
     onSubmit: async ({ value }) => {
       console.log('Form submitted:', value)
+      const data = await authClient.signUp.email({
+        email: value.email,
+        name: value.username,
+        password: value.password,
+        username: value.username,
+      })
+      console.log('Sign up response:', data)
       if (currentStep < 5) {
         setCurrentStep(currentStep + 1)
       }
