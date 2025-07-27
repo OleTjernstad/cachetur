@@ -10,7 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as mainRouteRouteImport } from './routes/(main)/route'
+import { Route as mainIndexRouteImport } from './routes/(main)/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthRegisterIndexRouteImport } from './routes/auth/register/index'
 
@@ -19,10 +20,14 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const mainRouteRoute = mainRouteRouteImport.update({
+  id: '/(main)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const mainIndexRoute = mainIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => mainRouteRoute,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
@@ -36,34 +41,41 @@ const AuthRegisterIndexRoute = AuthRegisterIndexRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof mainIndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
+  '/': typeof mainIndexRoute
   '/auth/register': typeof AuthRegisterIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/(main)': typeof mainRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
+  '/(main)/': typeof mainIndexRoute
   '/auth/register/': typeof AuthRegisterIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths: '/' | '/auth' | '/auth/login' | '/auth/register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/auth/login' | '/auth/register'
-  id: '__root__' | '/' | '/auth' | '/auth/login' | '/auth/register/'
+  to: '/auth' | '/auth/login' | '/' | '/auth/register'
+  id:
+    | '__root__'
+    | '/(main)'
+    | '/auth'
+    | '/auth/login'
+    | '/(main)/'
+    | '/auth/register/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  mainRouteRoute: typeof mainRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
 }
 
@@ -76,12 +88,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/(main)': {
+      id: '/(main)'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof mainRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(main)/': {
+      id: '/(main)/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof mainIndexRouteImport
+      parentRoute: typeof mainRouteRoute
     }
     '/auth/login': {
       id: '/auth/login'
@@ -100,6 +119,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface mainRouteRouteChildren {
+  mainIndexRoute: typeof mainIndexRoute
+}
+
+const mainRouteRouteChildren: mainRouteRouteChildren = {
+  mainIndexRoute: mainIndexRoute,
+}
+
+const mainRouteRouteWithChildren = mainRouteRoute._addFileChildren(
+  mainRouteRouteChildren,
+)
+
 interface AuthRouteRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterIndexRoute: typeof AuthRegisterIndexRoute
@@ -115,7 +146,7 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  mainRouteRoute: mainRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
