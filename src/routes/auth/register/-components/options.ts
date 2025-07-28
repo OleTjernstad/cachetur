@@ -6,6 +6,7 @@ export const formOpts = formOptions({
     referral: '',
     terms: false,
     email: '',
+    isEmailSent: false,
     password: '',
     confirmPassword: '',
     verificationCode: '',

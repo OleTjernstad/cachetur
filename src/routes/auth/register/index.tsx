@@ -21,8 +21,6 @@ export const Route = createFileRoute('/auth/register/')({
 export default function MultiStepSignupForm() {
   const [currentStep, setCurrentStep] = useState(1)
 
-  const [isEmailSent, setIsEmailSent] = useState<boolean>(false)
-
   const form = useAppForm({
     ...formOpts,
     onSubmit: async ({ value }) => {
@@ -76,13 +74,7 @@ export default function MultiStepSignupForm() {
           {currentStep === 3 && <StepThree form={form} />}
 
           {/* Step 4: Email Verification */}
-          {currentStep === 4 && (
-            <StepFire
-              form={form}
-              isEmailSent={isEmailSent}
-              setIsEmailSent={setIsEmailSent}
-            />
-          )}
+          {currentStep === 4 && <StepFire form={form} />}
 
           {/* Step 5: Account Creation Complete */}
           {currentStep === 5 && (
@@ -134,8 +126,11 @@ export default function MultiStepSignupForm() {
           {/* Navigation Buttons */}
           {currentStep < 5 && (
             <form.Subscribe
-              selector={(state) => state.values.terms}
-              children={(terms) => (
+              selector={(state) => ({
+                terms: state.values.terms,
+                isEmailSent: state.values.isEmailSent,
+              })}
+              children={({ terms, isEmailSent }) => (
                 <NavigationButtons
                   currentStep={currentStep}
                   isEmailSent={isEmailSent}
