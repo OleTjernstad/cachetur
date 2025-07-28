@@ -10,7 +10,7 @@ export const usersQueryOptions = queryOptions({
 export const fetchUsers = async () => {
   try {
     console.info(`Fetching users...`)
-    const users = await ctApi.get<User[]>(`users`).json()
+    const { users } = await ctApi.get<{ users: User[] }>(`users`).json()
 
     return users
   } catch (error) {

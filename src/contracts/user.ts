@@ -2,6 +2,10 @@ export interface User {
   id: string
   name: string
   email: string
-  createdAt: string
-  updatedAt: string
+  emailVerified: boolean
+  image: string | null
+  createdAt: Date
+  updatedAt: Date
+  username: string | null
+  displayUsername: string | null
 }
