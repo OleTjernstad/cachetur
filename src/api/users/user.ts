@@ -10,7 +10,7 @@ export const userQueryOptions = (userId: string) =>
 
 export const fetchUser = async (userId: string) => {
   console.info(`Fetching user with id ${userId}...`)
-  const user = await ctApi.get<User>(`users/${userId}`).json()
+  const { user } = await ctApi.get<{ user: User }>(`users/${userId}`).json()
 
   return user
 }
