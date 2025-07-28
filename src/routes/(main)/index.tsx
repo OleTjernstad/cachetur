@@ -1,28 +1,18 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-
-import { authClient } from '@/lib/auth-client'
+import { createFileRoute } from '@tanstack/react-router'
 import logo from '../../logo.svg'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { usersQueryOptions } from '@/api/users/users'
 
 export const Route = createFileRoute('/(main)/')({
   component: App,
-  beforeLoad: async ({ location }) => {
-    const { data: session, error } = await authClient.getSession()
-    console.log('Session:', session, 'Error:', error)
-    if (!session) {
-      throw redirect({
-        to: '/auth/login',
-        search: {
-          // Use the current location to power a redirect after login
-          // (Do not use `router.state.resolvedLocation` as it can
-          // potentially lag behind the actual current location)
-          redirect: location.href,
-        },
-      })
-    }
-  },
+  loader: ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(usersQueryOptions),
 })
 
 function App() {
+  const usersQuery = useSuspenseQuery(usersQueryOptions)
+  const users = usersQuery.data
+  console.log('Users:', users)
   return (
     <div className="text-center">
       <header className="min-h-screen flex flex-col items-center justify-center bg-[#282c34] text-white text-[calc(10px+2vmin)]">

@@ -1,10 +1,26 @@
 import { HeadphonesIcon, Home, Info, LogIn } from 'lucide-react'
-import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 
 import { MenuToolbar } from '@/components/menu/menu'
+import { authClient } from '@/lib/auth-client'
 
 export const Route = createFileRoute('/(main)')({
   component: MainLayout,
+  beforeLoad: async ({ location }) => {
+    const { data: session, error } = await authClient.getSession()
+    console.log('Session:', session, 'Error:', error)
+    if (!session) {
+      throw redirect({
+        to: '/auth/login',
+        search: {
+          // Use the current location to power a redirect after login
+          // (Do not use `router.state.resolvedLocation` as it can
+          // potentially lag behind the actual current location)
+          redirect: location.href,
+        },
+      })
+    }
+  },
 })
 
 function MainLayout() {
